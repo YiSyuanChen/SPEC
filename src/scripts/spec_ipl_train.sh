@@ -2,15 +2,15 @@
 export CUDA_VISIBLE_DEVICES=0
 
 ##### Manual Settings #####
-INTER_DATASET="xsum_wiki_own"
-EVAL_DATASET="xsum"
+INTER_DATASET="amazon_reviews_multi_unsup_own"
+EVAL_DATASET="amazon_reviews_multi_cond_own"
 
-INSERT_CONDITIONAL_ADAPTER=False
+INSERT_CONDITIONAL_ADAPTER=True
 ADAPTER_POSITIONS="full_dec"
 ADAPTER_TYPE="default"
 
-TRAIN_PARAMS_CONFIG="full_model"
-SURFIX=""
+TRAIN_PARAMS_CONFIG="full_model_with_full_dec_ada"
+SURFIX="_eval_best"
 
 EPOCHS=9
 EVAL_SAVE_STEPS=100
@@ -19,10 +19,10 @@ EVAL_SAVE_STEPS=100
 TRAIN_BATCH_SIZE=4
 EVAL_BATCH_SIZE=16
 GRAD_ACCUM=8
-PREPRO_WORKERS=48
+PREPRO_WORKERS=8
 
 ##### Corresponding Settings #####
-OUTPUT_FOLDER="../results/wikisumm/train/${TRAIN_PARAMS_CONFIG}"
+OUTPUT_FOLDER="../results/spec_ipl/train/${TRAIN_PARAMS_CONFIG}"
 
 ##### Sanity Check #####
 if [ $INSERT_CONDITIONAL_ADAPTER == True ]
@@ -40,8 +40,7 @@ else
 	fi
 fi
 
-##### Training with Specific Evaluation #####
-
+##### Training #####
 python main.py \
 	--dataset_name ${INTER_DATASET} \
 	--eval_dataset_name ${EVAL_DATASET} \

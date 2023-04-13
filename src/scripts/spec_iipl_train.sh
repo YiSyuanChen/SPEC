@@ -2,14 +2,14 @@
 export CUDA_VISIBLE_DEVICES=0
 
 ##### Manual Settings #####
-INTER_DATASET="xsum_unsup_own"
-EVAL_DATASET="xsum"
+META_DATASET=("reddit_tifu_cond_own" "scitldr_unsup_own")
+EVAL_DATASET="scitldr_cond_own"
 
-INSERT_CONDITIONAL_ADAPTER=False
+INSERT_CONDITIONAL_ADAPTER=True
 ADAPTER_POSITIONS="full_dec"
-ADAPTER_TYPE="default"
+ADAPTER_TYPE="sp"
 
-TRAIN_PARAMS_CONFIG="full_model"
+TRAIN_PARAMS_CONFIG="full_model_with_full_dec_${ADAPTER_TYPE}_ada"
 SURFIX=""
 
 EPOCHS=9
@@ -17,12 +17,18 @@ EVAL_SAVE_STEPS=100
 
 ##### Device-Dependent Settings #####
 TRAIN_BATCH_SIZE=4
-EVAL_BATCH_SIZE=16
+EVAL_BATCH_SIZE=4
 GRAD_ACCUM=8
 PREPRO_WORKERS=48
 
 ##### Corresponding Settings #####
-OUTPUT_FOLDER="../results/unsupervision/train/${TRAIN_PARAMS_CONFIG}"
+OUTPUT_FOLDER="../results/spec_iipl/train/${TRAIN_PARAMS_CONFIG}"
+
+join_arr() {
+	local IFS="$1"
+	shift
+	echo "$*"
+}
 
 ##### Sanity Check #####
 if [ $INSERT_CONDITIONAL_ADAPTER == True ]
@@ -43,11 +49,11 @@ fi
 ##### Training with Specific Evaluation #####
 
 python main.py \
-	--dataset_name ${INTER_DATASET} \
+	--meta_dataset_names ${META_DATASET[@]} \
 	--eval_dataset_name ${EVAL_DATASET} \
 	--model_name_or_path facebook/bart-base \
-	--output_dir ${OUTPUT_FOLDER}/${INTER_DATASET}_eval_${EVAL_DATASET}${SURFIX} \
-	--logging_dir ${OUTPUT_FOLDER}/${INTER_DATASET}_eval_${EVAL_DATASET}${SURFIX}/logs/ \
+	--output_dir ${OUTPUT_FOLDER}/$(join_arr _ "${META_DATASET[@]}")_eval_${EVAL_DATASET}${SURFIX} \
+	--logging_dir ${OUTPUT_FOLDER}/$(join_arr _ "${META_DATASET[@]}")_eval_${EVAL_DATASET}${SURFIX}/logs/ \
 	--report_to tensorboard \
 	--overwrite_output_dir \
 	--evaluation_strategy steps \
@@ -61,6 +67,7 @@ python main.py \
 	--per_device_eval_batch_size ${EVAL_BATCH_SIZE} \
 	--lr_scheduler_type constant \
 	--learning_rate 3e-5 \
+	--inner_learning_rate 3e-5 \
 	--do_train \
 	--do_eval \
 	--gradient_accumulation_steps ${GRAD_ACCUM} \
@@ -76,3 +83,6 @@ python main.py \
 	--adapter_type ${ADAPTER_TYPE} \
 	--predict_with_generate \
 	--save_model_accord_to_rouge \
+	--meta_mode \
+	--batch_group_method per_task \
+	--main_adapter_task_ids 0 \

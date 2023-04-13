@@ -2,23 +2,23 @@
 export CUDA_VISIBLE_DEVICES=0
 
 ##### Manual Settings #####
-INTER_DATASET="xsum_unsup_own"
-INTER_MODEL_FOLDER="../results/unsupervision/train/full_model/xsum_unsup_own_eval_xsum/checkpoint-200"
-TRAIN_EVAL_DATASET="xsum"
+INTER_DATASET="amazon_reviews_multi_unsup_own"
+INTER_MODEL_FOLDER="../results/spec_ipl/train/full_model_with_full_dec_ada/amazon_reviews_multi_unsup_own_eval_amazon_reviews_multi_cond_own_eval_best/checkpoint-26700"
+TRAIN_EVAL_DATASET="amazon_reviews_multi_cond_own"
 
-INSERT_CONDITIONAL_ADAPTER=False
+INSERT_CONDITIONAL_ADAPTER=True
 ADAPTER_POSITIONS="full_dec"
 ADAPTER_TYPE="default"
 
-TRAIN_PARAMS_CONFIG="full_model"
+TRAIN_PARAMS_CONFIG="full_model_with_full_dec_ada"
 SURFIX="_eval_best"
 
 TRAIN_NUM=10
-START_GROUP=1
-END_GROUP=1
+START_GROUP=2
+END_GROUP=2
 
 ##### Corresponding Settings #####
-OUTPUT_FOLDER="../results/unsupervision/adaptation/${TRAIN_PARAMS_CONFIG}"
+OUTPUT_FOLDER="../results/spec_ipl/adaptation/${TRAIN_PARAMS_CONFIG}"
 
 if [ $TRAIN_NUM == 10 ]
 then
@@ -65,8 +65,7 @@ else
 	fi	
 fi
 
-##### Training #####
-
+##### Adaptation #####
 for g in $(seq $START_GROUP $END_GROUP)
 do
 	python main.py \

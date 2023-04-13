@@ -83,18 +83,18 @@ def register_datasets():
             true_name +
             '_unsup_own'] = summarization_length_mapping[dataset_name]
         summarization_own_file_mapping[true_name + '_cond_own'] = os.path.join(
-            "../../ConditionDataset/datasets/supervised", true_name)
+            "../datasets/supervised", true_name)
         summarization_own_file_mapping[
             true_name + '_unsup_own'] = os.path.join(
-                "../../ConditionDataset/datasets/unsupervised", true_name)
+                "../datasets/unsupervised", true_name)
 
         if '_own' in dataset_name:
             if true_name == 'rottentomatoes' or true_name == 'idebate':
                 summarization_own_file_mapping[dataset_name] = os.path.join(
-                    "../../../OpinionAbstracts/datasets", true_name)
+                    "../../OpinionAbstracts/datasets", true_name)
             if '_wiki' in dataset_name:
                 summarization_own_file_mapping[dataset_name] = os.path.join(
-                    "../../../WikiSumm/datasets/reformated",
+                    "../../WikiTransfer/datasets/reformated",
                     true_name.replace("_wiki", ""))
             if '_example' in dataset_name:
                 summarization_own_file_mapping[dataset_name] = os.path.join(

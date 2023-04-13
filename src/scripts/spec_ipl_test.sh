@@ -9,11 +9,22 @@ ADAPTER_TYPE="default"
 TRAIN_PARAMS_CONFIG="full_model_with_full_dec_ada"
 SURFIX="_eval_best"
 
+TRAIN_NUM=10 # 100
 START_GROUP=1
 END_GROUP=1
 
+CLUSTER_DATA_NUM=10 # 100
+CLUSTER_NUM=8
+DECODE_METHOD="test_cluster_${CLUSTER_DATA_NUM}_examples_${CLUSTER_NUM}_clusters"
+BIAS_SURFIX=""
+
+INTER_DATASET="amazon_reviews_multi_unsup_own"
+TRAIN_EVAL_DATASET="amazon_reviews_multi_cond_own"
+TURE_NAME="amazon_reviews_multi"
+CKPT=(6)
+
 ##### Corresponding Settings #####
-OUTPUT_FOLDER="../results/spec_self/adaptation/${TRAIN_PARAMS_CONFIG}"
+OUTPUT_FOLDER="../results/spec_ipl/adaptation/${TRAIN_PARAMS_CONFIG}"
 
 ##### Sanity Check #####
 if [ $INSERT_CONDITIONAL_ADAPTER == True ]
@@ -32,18 +43,7 @@ else
 	fi
 fi
 
-##### Testing for 10 examples #####
-TRAIN_NUM=10
-CLUSTER_DATA_NUM=10
-CLUSTER_NUM=8
-DECODE_METHOD="test_cluster_${CLUSTER_DATA_NUM}_examples_${CLUSTER_NUM}_clusters"
-BIAS_SURFIX=""
-
-INTER_DATASET="xsum_unsup_own"
-TRAIN_EVAL_DATASET="xsum_cond_own"
-TURE_NAME="xsum"
-CKPT=(22)
-
+##### Testing #####
 for g in $(seq $START_GROUP $END_GROUP)
 do
 	python main.py \
@@ -61,13 +61,6 @@ do
 		--insert_conditional_adapters ${INSERT_CONDITIONAL_ADAPTER} \
 		--adapter_positions ${ADAPTER_POSITIONS} \
 		--adapter_type ${ADAPTER_TYPE} \
-		--cluster_conditions_path ../../ConditionDataset/analysis/${TURE_NAME}/means_iter_5000_perp_30_cluster_8_examples_${CLUSTER_DATA_NUM}${BIAS_SURFIX}.npy \
+		--cluster_conditions_path ../analysis/${TURE_NAME}/means_iter_5000_perp_30_cluster_8_examples_${CLUSTER_DATA_NUM}${BIAS_SURFIX}.npy \
 		####
 done
-
-###### Testing 100 Examples #####
-TRAIN_NUM=100
-CLUSTER_DATA_NUM=100
-CLUSTER_NUM=8
-DECODE_METHOD="test_cluster_${CLUSTER_DATA_NUM}_examples_${CLUSTER_NUM}_clusters"
-BIAS_SURFIX=""
