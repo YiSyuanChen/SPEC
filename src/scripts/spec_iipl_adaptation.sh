@@ -2,9 +2,9 @@
 export CUDA_VISIBLE_DEVICES=0
 
 ##### Manual Settings #####
-META_DATASET=("wikihow_cond_own" "xlsum_cond_own" "scitldr_unsup_own")
-META_MODEL_FOLDER="../results/spec_meta/train/full_model_with_full_dec_sw_ada/wikihow_cond_own_xlsum_cond_own_scitldr_unsup_own_eval_scitldr_cond_own_eval_on_side/checkpoint-1100"
-TRAIN_EVAL_DATASET="scitldr_cond_own"
+META_DATASET=("aeslc_cond_own" "reddit_tifu_cond_own" "amazon_reviews_multi_unsup_own")
+META_MODEL_FOLDER="../results/spec_iipl/train/full_model_with_full_dec_sw_ada/aeslc_cond_own_reddit_tifu_cond_own_amazon_reviews_multi_unsup_own_eval_amazon_reviews_multi_cond_own/checkpoint-9400"
+TRAIN_EVAL_DATASET="amazon_reviews_multi_cond_own"
 
 INSERT_CONDITIONAL_ADAPTER=True
 ADAPTER_POSITIONS="full_dec"
@@ -15,10 +15,10 @@ SURFIX="_eval_best"
 
 TRAIN_NUM=10
 START_GROUP=1
-END_GROUP=1
+END_GROUP=2
 
 ##### Corresponding Settings #####
-OUTPUT_FOLDER="../results/spec_meta/adaptation/${TRAIN_PARAMS_CONFIG}"
+OUTPUT_FOLDER="../results/spec_iipl/adaptation/${TRAIN_PARAMS_CONFIG}"
 
 join_arr() {
 	local IFS="$1"

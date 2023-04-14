@@ -14,7 +14,7 @@ TRAIN_PARAMS_CONFIG="full_model_with_full_dec_ada"
 SURFIX="_eval_best"
 
 TRAIN_NUM=10
-START_GROUP=2
+START_GROUP=1
 END_GROUP=2
 
 ##### Corresponding Settings #####

@@ -11,7 +11,7 @@ SURFIX="_eval_best"
 
 TRAIN_NUM=10 # 100
 START_GROUP=1
-END_GROUP=1
+END_GROUP=2
 
 CLUSTER_DATA_NUM=10 # 100
 CLUSTER_NUM=8
@@ -21,7 +21,7 @@ BIAS_SURFIX=""
 INTER_DATASET="amazon_reviews_multi_unsup_own"
 TRAIN_EVAL_DATASET="amazon_reviews_multi_cond_own"
 TURE_NAME="amazon_reviews_multi"
-CKPT=(6)
+CKPT=(6 34)
 
 ##### Corresponding Settings #####
 OUTPUT_FOLDER="../results/spec_ipl/adaptation/${TRAIN_PARAMS_CONFIG}"

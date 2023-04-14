@@ -2,12 +2,12 @@
 export CUDA_VISIBLE_DEVICES=0
 
 ##### Manual Settings #####
-META_DATASET=("reddit_tifu_cond_own" "scitldr_unsup_own")
-EVAL_DATASET="scitldr_cond_own"
+META_DATASET=("aeslc_cond_own" "reddit_tifu_cond_own" "amazon_reviews_multi_unsup_own")
+EVAL_DATASET="amazon_reviews_multi_cond_own"
 
 INSERT_CONDITIONAL_ADAPTER=True
 ADAPTER_POSITIONS="full_dec"
-ADAPTER_TYPE="sp"
+ADAPTER_TYPE="sw"
 
 TRAIN_PARAMS_CONFIG="full_model_with_full_dec_${ADAPTER_TYPE}_ada"
 SURFIX=""
@@ -17,9 +17,9 @@ EVAL_SAVE_STEPS=100
 
 ##### Device-Dependent Settings #####
 TRAIN_BATCH_SIZE=4
-EVAL_BATCH_SIZE=4
+EVAL_BATCH_SIZE=16
 GRAD_ACCUM=8
-PREPRO_WORKERS=48
+PREPRO_WORKERS=8
 
 ##### Corresponding Settings #####
 OUTPUT_FOLDER="../results/spec_iipl/train/${TRAIN_PARAMS_CONFIG}"
@@ -85,4 +85,4 @@ python main.py \
 	--save_model_accord_to_rouge \
 	--meta_mode \
 	--batch_group_method per_task \
-	--main_adapter_task_ids 0 \
+	--main_adapter_task_ids 0 1 \

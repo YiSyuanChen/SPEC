@@ -7,10 +7,21 @@ ADAPTER_POSITIONS="full_dec"
 ADAPTER_TYPE="sw"
 
 TRAIN_PARAMS_CONFIG="full_model_with_full_dec_${ADAPTER_TYPE}_ada"
-SURFIX="_anil_eval_best"
+SURFIX="_eval_best"
 
+TRAIN_NUM=10 # 100
 START_GROUP=1
-END_GROUP=1
+END_GROUP=2
+
+CLUSTER_DATA_NUM=10 # 100
+CLUSTER_NUM=8
+DECODE_METHOD="test_cluster_${CLUSTER_DATA_NUM}_examples_${CLUSTER_NUM}_clusters"
+BIAS_SURFIX=""
+
+META_DATASET=("aeslc_cond_own" "reddit_tifu_cond_own" "amazon_reviews_multi_unsup_own")
+TRAIN_EVAL_DATASET="amazon_reviews_multi_cond_own"
+TURE_NAME="amazon_reviews_multi"
+CKPT=(22 22)
 
 ##### Corresponding Settings #####
 OUTPUT_FOLDER="../results/spec_iipl/adaptation/${TRAIN_PARAMS_CONFIG}"
@@ -39,18 +50,7 @@ else
 
 fi
 
-###### Testing 10 Examples #####
-TRAIN_NUM=10
-CLUSTER_DATA_NUM=10
-CLUSTER_NUM=8
-DECODE_METHOD="test_cluster_${CLUSTER_DATA_NUM}_examples_${CLUSTER_NUM}_clusters"
-BIAS_SURFIX=""
-
-META_DATASET=("xlsum_cond_own" "xsum_cond_own" "reddit_tifu_unsup_own")
-TRAIN_EVAL_DATASET="reddit_tifu_cond_own"
-TURE_NAME="reddit_tifu"
-CKPT=(28)
-
+###### Testing #####
 for g in $(seq $START_GROUP $END_GROUP)
 do
 	python main.py \
@@ -71,10 +71,3 @@ do
 		--cluster_conditions_path ../analysis/${TURE_NAME}/means_iter_5000_perp_30_cluster_${CLUSTER_NUM}_examples_${CLUSTER_DATA_NUM}${BIAS_SURFIX}.npy \
 		#####
 done
-
-###### Testing 100 Examples #####
-TRAIN_NUM=100
-CLUSTER_DATA_NUM=100
-CLUSTER_NUM=8
-DECODE_METHOD="test_cluster_${CLUSTER_DATA_NUM}_examples_${CLUSTER_NUM}_clusters"
-BIAS_SURFIX=""
